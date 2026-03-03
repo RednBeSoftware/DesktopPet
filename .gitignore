@@ -1,6 +1,5 @@
 bin/
 obj/
-.vs/
-bin/
-obj/
-.vs/
+*.user
+*.userosscache
+*.sln.docstates
