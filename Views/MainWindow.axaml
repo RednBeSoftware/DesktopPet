@@ -1,0 +1,31 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:DesktopPet.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        x:Class="DesktopPet.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="DesktopPet"
+        TransparencyLevelHint="Transparent"
+        Background="{x:Null}"
+        SystemDecorations="None"
+        CanResize="False"
+        Topmost="True"
+        Width="100"
+        Height="350">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Panel Background="{x:Null}">
+        <Image Name="ImageStickman"
+            Source="/Assets/Stickman/StickmanDefault.png"
+            Height="350"
+            Width="350"
+            IsHitTestVisible="True"/>
+    </Panel>
+
+</Window>
