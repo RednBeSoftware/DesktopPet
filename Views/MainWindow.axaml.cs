@@ -1,7 +1,11 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using DesktopPet.Classes;
-using Avalonia.Media.Imaging;
+using Google.GenAI;
+using Google.GenAI.Types;
 using System;
+using System.Threading.Tasks;
 
 namespace DesktopPet.Views;
 
@@ -13,8 +17,68 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         _stickman.Image = ImageStickman;
-        CreateAnimation("StickmanWave", _stickman, 1, 3, "png");
+        _stickman.CreateAnimation("StickmanWave", 1, 3, "png");
         PlayAnimationPingPong("StickmanWave", _stickman);
+
+        this.Loaded += async (s, e) => await TestAI();
+    }
+
+    public async Task TestAI() 
+{
+    try 
+    {
+        AiTest.Text = "Bağlanıyor...";
+        
+        var apiKey = System.Environment.GetEnvironmentVariable("GeminiApiKey");
+        var client = new Client(apiKey: apiKey);
+
+        var response = await client.Models.GenerateContentAsync(
+            model: "models/gemini-2.5-flash", 
+            contents: "Türkiye'nin başkenti neresi"
+        );
+
+        if (response?.Candidates?[0]?.Content?.Parts?[0] != null)
+        {
+            AiTest.Text = response.Candidates[0].Content.Parts[0].Text;
+        }
+    }
+    catch (Exception ex)
+    {
+        AiTest.Text = $"Hata: {ex.Message}";
+        
+        if (ex.Message.Contains("429")) {
+            AiTest.Text = "Kota doldu, 1 dakika bekleyin.";
+        }
+    }
+}
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        base.OnKeyDown(e);
+
+        int step = 10;
+
+        var currentPosition = this.Position;
+        int newX = currentPosition.X;
+        int newY = currentPosition.Y;
+
+        switch (e.Key)
+        {
+            case Key.A:
+                newX -= step;
+                break;
+            case Key.D:
+                newX += step;
+                break;
+            case Key.W:
+                newY -= step;
+                break;
+            case Key.S:
+                newY += step;
+                break;
+        }
+
+        this.Position = new PixelPoint(newX, newY);
     }
 
     private void PlayAnimationPingPong(string animationName, Pet pet)
@@ -43,18 +107,5 @@ public partial class MainWindow : Window
             }
         };
         animation.Timer.Start();
-    }
-
-    private void CreateAnimation(string animationName, Pet pet, int firstFrameNumber, int lastFrameNumber, string extension)
-    {
-        Animation animation = new Animation{ Name = animationName, FramesPerSecond = 10 };
-        for (int i = firstFrameNumber; i <= lastFrameNumber; i++)
-        {
-            string uriPath = $"avares://DesktopPet/Assets/{pet.Name}/{animationName}/{animationName}{i}.{extension}";
-            
-            var asset = Avalonia.Platform.AssetLoader.Open(new Uri(uriPath));
-            animation.Frames.Add(new Bitmap(asset));
-        }
-        pet.Animations.Add(animationName, animation);
     }
 }
