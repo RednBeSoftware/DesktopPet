@@ -3,9 +3,11 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using DesktopPet.Classes;
 using Google.GenAI;
+using DotNetEnv;
 using Google.GenAI.Types;
 using System;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace DesktopPet.Views;
 
@@ -20,37 +22,16 @@ public partial class MainWindow : Window
         _stickman.CreateAnimation("StickmanWave", 1, 3, "png");
         PlayAnimationPingPong("StickmanWave", _stickman);
 
-        this.Loaded += async (s, e) => await TestAI();
+        this.Opened += SetAIOnWindowOpened;
     }
 
-    public async Task TestAI() 
-{
-    try 
+    private async void SetAIOnWindowOpened(object sender, EventArgs e)
     {
-        AiTest.Text = "Bağlanıyor...";
-        
-        var apiKey = System.Environment.GetEnvironmentVariable("GeminiApiKey");
-        var client = new Client(apiKey: apiKey);
-
-        var response = await client.Models.GenerateContentAsync(
-            model: "models/gemini-2.5-flash", 
-            contents: "Türkiye'nin başkenti neresi"
-        );
-
-        if (response?.Candidates?[0]?.Content?.Parts?[0] != null)
-        {
-            AiTest.Text = response.Candidates[0].Content.Parts[0].Text;
-        }
+         _stickman.Gemini = new Gemini();
+        string promt = "Say 'this is a test'";
+        string geminiResponse = await _stickman.Gemini.GetResponse(promt);
+        AiTest.Text = geminiResponse;
     }
-    catch (Exception ex)
-    {
-        AiTest.Text = $"Hata: {ex.Message}";
-        
-        if (ex.Message.Contains("429")) {
-            AiTest.Text = "Kota doldu, 1 dakika bekleyin.";
-        }
-    }
-}
 
     protected override void OnKeyDown(KeyEventArgs e)
     {

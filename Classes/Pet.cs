@@ -14,9 +14,11 @@ internal class Pet
 
         Image = new Image();
     }
+
     public string Name { get; set; }
     public Dictionary<string, Animation> Animations { get; set; }
     public Image Image { get; set; }
+    public Gemini Gemini { get; set; }
 
     public void CreateAnimation(string animationName, int firstFrameNumber, int lastFrameNumber, string extension)
     {
