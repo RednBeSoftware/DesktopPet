@@ -8,7 +8,6 @@
         Title="DesktopPet"
         TransparencyLevelHint="{x:Null}"
         Background="{x:Null}"
-        IsHitTestVisible="False"
         SystemDecorations="None"
         CanResize="False"
         Topmost="True"
@@ -26,7 +25,13 @@
             Source="/Assets/Stickman/StickmanDefault.png"
             Height="350"
             Width="350"
-            IsHitTestVisible="True"/>
+            IsHitTestVisible="True">
+            <Image.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open Chat" Name="OpenChatMenuItem"/>
+                </ContextMenu>
+            </Image.ContextMenu>
+        </Image>
         <TextBlock x:Name="AiTest" Text="Waiting..." TextWrapping="Wrap" Margin="10"/>
     </Panel>
 </Window>

@@ -19,13 +19,13 @@ public partial class ChatWindow : Window
     public ChatWindow()
     {
         InitializeComponent();
-        
+
         _chatPanel = this.FindControl<StackPanel>("ChatPanel");
         _inputTextBox = this.FindControl<TextBox>("InputTextBox");
         _sendButton = this.FindControl<Button>("SendButton");
 
         _gemini = new Gemini();
-        
+
         if (_sendButton != null)
             _sendButton.Click += SendButton_Click;
         if (_inputTextBox != null)
@@ -55,7 +55,7 @@ public partial class ChatWindow : Window
             return;
 
         string? message = _inputTextBox.Text?.Trim();
-        
+
         if (string.IsNullOrEmpty(message))
             return;
 
@@ -98,7 +98,11 @@ public partial class ChatWindow : Window
 
         var message = new Border
         {
-            Background = isUserMessage ? new Avalonia.Media.SolidColorBrush(new Avalonia.Media.Color(255, 59, 89, 152)) : new Avalonia.Media.SolidColorBrush(new Avalonia.Media.Color(255, 230, 230, 230)),
+            Background = isUserMessage
+                ? new Avalonia.Media.SolidColorBrush(
+                    new Avalonia.Media.Color(255, 59, 89, 152))
+                : new Avalonia.Media.SolidColorBrush(new Avalonia.Media.Color(255, 230, 230, 230)),
+
             CornerRadius = new CornerRadius(10),
             Padding = new Thickness(12),
             Margin = new Thickness(5, 5, 5, 5),
@@ -110,7 +114,10 @@ public partial class ChatWindow : Window
         {
             Text = text,
             TextWrapping = Avalonia.Media.TextWrapping.Wrap,
-            Foreground = isUserMessage ? new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.White) : new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.Black)
+
+            Foreground = isUserMessage
+                ? new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.White)
+                : new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.Black)
         };
 
         message.Child = textBlock;
