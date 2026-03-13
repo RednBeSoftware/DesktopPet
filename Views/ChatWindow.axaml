@@ -17,16 +17,20 @@
         </ScrollViewer>
         
         <!-- Input Area -->
-        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="10" Background="#F0F0F0">
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="10" Background="Black">
             <TextBox x:Name="InputTextBox" 
                      Grid.Column="0" 
                      Watermark="Type your message..."
                      Margin="0,0,5,0"
-                     AcceptsReturn="False"/>
-            <Button x:Name="SendButton" 
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"/>
+            <Button x:Name="SendButton"
+                    Background="Black"
                     Grid.Column="1" 
                     Content="Send"
-                    Width="60"/>
+                    Width="60"
+                    BorderBrush="White"
+                    BorderThickness="1"/>
         </Grid>
     </Grid>
 </Window>
