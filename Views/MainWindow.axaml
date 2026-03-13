@@ -32,6 +32,10 @@
                 </ContextMenu>
             </Image.ContextMenu>
         </Image>
-        <TextBlock x:Name="AiTest" Text="Waiting..." TextWrapping="Wrap" Margin="10"/>
+        <TextBlock x:Name="MousePosition" Text="X: 0, Y: 0"
+                 TextWrapping="Wrap"
+                 VerticalAlignment="Stretch"
+                 HorizontalAlignment="Stretch"
+                 />
     </Panel>
 </Window>

@@ -4,3 +4,4 @@ obj/
 *.userosscache
 *.sln.docstates
 .env
+MousePosition.cs

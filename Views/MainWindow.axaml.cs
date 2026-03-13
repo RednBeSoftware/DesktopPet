@@ -1,13 +1,9 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 using DesktopPet.Classes;
-using Google.GenAI;
-using DotNetEnv;
-using Google.GenAI.Types;
-using System;
-using System.Threading.Tasks;
-using System.Threading;
 
 namespace DesktopPet.Views;
 
@@ -15,6 +11,7 @@ public partial class MainWindow : Window
 {
     private readonly Pet _stickman = new Pet { Name = "Stickman" };
     private ChatWindow? _chatWindow;
+    private MousePosition _mousePosition;
 
     public MainWindow()
     {
@@ -28,6 +25,28 @@ public partial class MainWindow : Window
         {
             openChatMenuItem.Click += (sender, e) => OpenChatWindow();
         }
+
+        GetMousePositonTest();
+    }
+
+    private void GetMousePositonTest()
+    {
+        int mouseX;
+        int mouseY;
+
+        DispatcherTimer timer = new DispatcherTimer();
+
+        timer.Interval = TimeSpan.FromSeconds(0.5);
+
+        timer.Tick += (sender, e) =>
+        {
+            mouseX = _mousePosition.GetMousePosition().X;
+            mouseY = _mousePosition.GetMousePosition().Y;
+
+            MousePosition.Text = $"X: {mouseX}, Y: {mouseY}";
+        };
+
+        timer.Start();
     }
 
     private void OpenChatWindow()
@@ -75,7 +94,7 @@ public partial class MainWindow : Window
 
         this.Position = new PixelPoint(newX, newY);
     }
-    
+
 
     private void PlayAnimationPingPong(string animationName, Pet pet)
     {
