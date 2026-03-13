@@ -5,8 +5,28 @@
         x:Class="DesktopPet.Views.ChatWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="DesktopPet"
+        Title="DesktopPet Chat"
         CanResize="True"
-        Width="100"
-        Height="350">
+        Width="400"
+        Height="500">
+    
+    <Grid RowDefinitions="*,Auto">
+        <!-- Chat Messages ScrollViewer -->
+        <ScrollViewer x:Name="ChatScrollViewer" Grid.Row="0" Margin="0">
+            <StackPanel x:Name="ChatPanel" Margin="10"/>
+        </ScrollViewer>
+        
+        <!-- Input Area -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="10" Background="#F0F0F0">
+            <TextBox x:Name="InputTextBox" 
+                     Grid.Column="0" 
+                     Watermark="Type your message..."
+                     Margin="0,0,5,0"
+                     AcceptsReturn="False"/>
+            <Button x:Name="SendButton" 
+                    Grid.Column="1" 
+                    Content="Send"
+                    Width="60"/>
+        </Grid>
+    </Grid>
 </Window>
