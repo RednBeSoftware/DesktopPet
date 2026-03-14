@@ -2,8 +2,11 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
 using DesktopPet.Classes;
+using Velopack;
+using Velopack.Sources;
 
 namespace DesktopPet.Views;
 
@@ -11,7 +14,6 @@ public partial class MainWindow : Window
 {
     private readonly Pet _stickman = new Pet { Name = "Stickman" };
     private ChatWindow? _chatWindow;
-    private MousePosition _mousePosition;
 
     public MainWindow()
     {
@@ -19,47 +21,6 @@ public partial class MainWindow : Window
         _stickman.Image = ImageStickman;
         _stickman.CreateAnimation("StickmanWave", 1, 3, "png");
         PlayAnimationPingPong("StickmanWave", _stickman);
-
-        var openChatMenuItem = this.FindControl<MenuItem>("OpenChatMenuItem");
-        if (openChatMenuItem != null)
-        {
-            openChatMenuItem.Click += (sender, e) => OpenChatWindow();
-        }
-
-        GetMousePositonTest();
-    }
-
-    private void GetMousePositonTest()
-    {
-        int mouseX;
-        int mouseY;
-
-        DispatcherTimer timer = new DispatcherTimer();
-
-        timer.Interval = TimeSpan.FromSeconds(0.5);
-
-        timer.Tick += (sender, e) =>
-        {
-            mouseX = _mousePosition.GetMousePosition().X;
-            mouseY = _mousePosition.GetMousePosition().Y;
-
-            MousePosition.Text = $"X: {mouseX}, Y: {mouseY}";
-        };
-
-        timer.Start();
-    }
-
-    private void OpenChatWindow()
-    {
-        if (_chatWindow == null || !_chatWindow.IsVisible)
-        {
-            _chatWindow = new ChatWindow();
-            _chatWindow.Show();
-        }
-        else
-        {
-            _chatWindow.Activate();
-        }
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
@@ -122,5 +83,37 @@ public partial class MainWindow : Window
             }
         };
         animation.Timer.Start();
+    }
+
+    private void OpenChatMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (_chatWindow == null || !_chatWindow.IsVisible)
+        {
+            _chatWindow = new ChatWindow();
+            _chatWindow.Show();
+        }
+        else
+        {
+            _chatWindow.Activate();
+        }
+    }
+
+    private async void Update_OnClick(object? sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var souce = new GithubSource
+            ("https://github.com/RednBeSoftware/DesktopPet.git",
+                null,
+                false,
+                null);
+
+            var mgr = new UpdateManager(souce);
+            var newVersion = await mgr.CheckForUpdatesAsync();
+        }
+        catch (Exception exception)
+        {
+            return;
+        }
     }
 }

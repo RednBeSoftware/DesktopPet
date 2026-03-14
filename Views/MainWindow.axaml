@@ -28,14 +28,10 @@
             IsHitTestVisible="True">
             <Image.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Open Chat" Name="OpenChatMenuItem"/>
+                    <MenuItem Header="Update App" Name="Update" Click="Update_OnClick"/>
+                    <MenuItem Header="Open Chat" Name="OpenChatMenuItem" Click="OpenChatMenuItem_OnClick"/>
                 </ContextMenu>
             </Image.ContextMenu>
         </Image>
-        <TextBlock x:Name="MousePosition" Text="X: 0, Y: 0"
-                 TextWrapping="Wrap"
-                 VerticalAlignment="Stretch"
-                 HorizontalAlignment="Stretch"
-                 />
     </Panel>
 </Window>
