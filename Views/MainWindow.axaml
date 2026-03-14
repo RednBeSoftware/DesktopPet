@@ -32,10 +32,5 @@
                 </ContextMenu>
             </Image.ContextMenu>
         </Image>
-        <TextBlock x:Name="MousePosition" Text="X: 0, Y: 0"
-                 TextWrapping="Wrap"
-                 VerticalAlignment="Stretch"
-                 HorizontalAlignment="Stretch"
-                 />
     </Panel>
 </Window>
