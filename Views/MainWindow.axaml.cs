@@ -21,10 +21,6 @@ public partial class MainWindow : Window
         _stickman.Image = ImageStickman;
         _stickman.CreateAnimation("StickmanWave", 1, 3, "png");
         PlayAnimationPingPong("StickmanWave", _stickman);
-        
-        //PAT Test
-        Console.WriteLine("HelloWorld");
-        Console.WriteLine("HelloWorld");
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
