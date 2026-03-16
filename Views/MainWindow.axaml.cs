@@ -87,15 +87,18 @@ public partial class MainWindow : Window
 
     private void OpenChatMenuItem_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (_chatWindow == null || !_chatWindow.IsVisible)
+        Dispatcher.UIThread.Post(() =>
         {
-            _chatWindow = new ChatWindow();
-            _chatWindow.Show();
-        }
-        else
-        {
-            _chatWindow.Activate();
-        }
+            if (_chatWindow == null || !_chatWindow.IsVisible)
+            {
+                _chatWindow = new ChatWindow();
+                _chatWindow.Show();
+            }
+            else
+            {
+                _chatWindow.Activate();
+            }
+        });
     }
 
     private async void Update_OnClick(object? sender, RoutedEventArgs e)
