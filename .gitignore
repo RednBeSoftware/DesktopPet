@@ -5,3 +5,5 @@ obj/
 *.sln.docstates
 .env
 MousePosition.cs
+Releases/
+Publish/

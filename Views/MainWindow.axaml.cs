@@ -5,8 +5,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using DesktopPet.Classes;
-using Velopack;
-using Velopack.Sources;
 
 namespace DesktopPet.Views;
 
@@ -103,20 +101,27 @@ public partial class MainWindow : Window
 
     private async void Update_OnClick(object? sender, RoutedEventArgs e)
     {
-        try
-        {
-            var souce = new GithubSource
-            ("https://github.com/RednBeSoftware/DesktopPet.git",
-                null,
-                false,
-                null);
+        return;
 
-            var mgr = new UpdateManager(souce);
-            var newVersion = await mgr.CheckForUpdatesAsync();
-        }
-        catch (Exception exception)
-        {
-            return;
-        }
+        //try
+        //{
+        //     // var source = new GithubSource
+        // ("https://github.com/RednBeSoftware/DesktopPet.git",
+        //     null,
+        //     false,
+        //    null);
+
+        // var mgr = new UpdateManager(source);
+        // var newVersion = await mgr.CheckForUpdatesAsync();
+        // }
+        //catch (Exception exception)
+        // {
+        //     return;
+        // }
+    }
+
+    private void CloseApp_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Close();
     }
 }
