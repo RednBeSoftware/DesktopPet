@@ -115,7 +115,7 @@ public partial class MainWindow : Window
         animation.Timer.Start();
     }
 
-    private void OpenChatMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    private void OpenChat_OnClick(object? sender, RoutedEventArgs e)
     {
         if (Environment.GetEnvironmentVariable("GeminiApiKey") is null) return;
         
