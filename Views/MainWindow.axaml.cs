@@ -20,6 +20,8 @@ public partial class MainWindow : Window
         _stickman.Image = ImageStickman;
         _stickman.CreateAnimation("StickmanWave", 1, 3, "png");
         PlayAnimationPingPong("StickmanWave", _stickman);
+
+        MoveRandom();
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
@@ -55,7 +57,7 @@ public partial class MainWindow : Window
         this.Position = new PixelPoint(newX, newY);
     }
 
-    private async Task MoveRandom(Pet pet)
+    private async Task MoveRandom()
     {
         try
         {
@@ -77,14 +79,13 @@ public partial class MainWindow : Window
             
             newX += stepX * directionX;
             newY += stepY * directionY;
-            
-            currentPosition = new PixelPoint(newX, newY);
+
+            this.Position = new PixelPoint(newX, newY);
         }
         catch (Exception e)
         {
             return;
         }
-        
     }
 
     private void PlayAnimationPingPong(string animationName, Pet pet)
@@ -118,7 +119,7 @@ public partial class MainWindow : Window
     private void OpenChat_OnClick(object? sender, RoutedEventArgs e)
     {
         if (Environment.GetEnvironmentVariable("GeminiApiKey") is null) return;
-        
+
         Dispatcher.UIThread.Post(() =>
         {
             if (_chatWindow == null || !_chatWindow.IsVisible)
