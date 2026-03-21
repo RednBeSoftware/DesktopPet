@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -54,6 +55,37 @@ public partial class MainWindow : Window
         this.Position = new PixelPoint(newX, newY);
     }
 
+    private async Task MoveRandom(Pet pet)
+    {
+        try
+        {
+            var random = new Random();
+
+            int stepX = random.Next(10, 51);
+            int stepY = random.Next(10, 51);
+            int directionX = random.Next(-1, 2);
+            int directionY = random.Next(-1, 2);
+            double startTimeMax = 1;
+            double startTimeMin = 5;
+            double startTime = random.NextDouble() * (startTimeMax - startTimeMin) + startTimeMin;
+
+            var currentPosition = this.Position;
+            var newX = currentPosition.X;
+            var newY = currentPosition.Y;
+
+            await Task.Delay((int)startTime * 1000);
+            
+            newX += stepX * directionX;
+            newY += stepY * directionY;
+            
+            currentPosition = new PixelPoint(newX, newY);
+        }
+        catch (Exception e)
+        {
+            return;
+        }
+        
+    }
 
     private void PlayAnimationPingPong(string animationName, Pet pet)
     {
@@ -85,6 +117,8 @@ public partial class MainWindow : Window
 
     private void OpenChatMenuItem_OnClick(object? sender, RoutedEventArgs e)
     {
+        if (Environment.GetEnvironmentVariable("GeminiApiKey") is null) return;
+        
         Dispatcher.UIThread.Post(() =>
         {
             if (_chatWindow == null || !_chatWindow.IsVisible)

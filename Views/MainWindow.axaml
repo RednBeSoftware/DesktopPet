@@ -29,7 +29,6 @@
             <Image.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Update App" Name="Update" Click="Update_OnClick"/>
-                    <MenuItem Header="Open Chat" Name="OpenChatMenuItem" Click="OpenChatMenuItem_OnClick"/>
                     <MenuItem Header="Close App" Name="CloseApp" Click="CloseApp_OnClick"/>
                 </ContextMenu>
             </Image.ContextMenu>
