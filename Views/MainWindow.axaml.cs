@@ -22,6 +22,7 @@ public partial class MainWindow : Window
         PlayAnimationPingPong("StickmanWave", _stickman);
 
         MoveRandom();
+        MoveRandom();
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
