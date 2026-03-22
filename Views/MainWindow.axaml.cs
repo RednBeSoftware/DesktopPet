@@ -22,7 +22,6 @@ public partial class MainWindow : Window
         PlayAnimationPingPong("StickmanWave", _stickman);
 
         MoveRandom();
-        MoveRandom();
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
@@ -58,34 +57,46 @@ public partial class MainWindow : Window
         this.Position = new PixelPoint(newX, newY);
     }
 
+    private readonly Random _random = new Random(); // Döngü dışında tanımlandı
+
     private async Task MoveRandom()
     {
-        try
+        while (true)
         {
-            var random = new Random();
+            try
+            {
+                double waitTime = _random.NextDouble() * (5.0 - 1.0) + 1.0;
+                await Task.Delay(TimeSpan.FromSeconds(waitTime));
 
-            int stepX = random.Next(10, 51);
-            int stepY = random.Next(10, 51);
-            int directionX = random.Next(-1, 2);
-            int directionY = random.Next(-1, 2);
-            double startTimeMax = 1;
-            double startTimeMin = 5;
-            double startTime = random.NextDouble() * (startTimeMax - startTimeMin) + startTimeMin;
-
-            var currentPosition = this.Position;
-            var newX = currentPosition.X;
-            var newY = currentPosition.Y;
-
-            await Task.Delay((int)startTime * 1000);
+                var currentPos = this.Position;
             
-            newX += stepX * directionX;
-            newY += stepY * directionY;
+                int targetDeltaX = _random.Next(-250, 251);
+                int targetDeltaY = _random.Next(-250, 251);
 
-            this.Position = new PixelPoint(newX, newY);
-        }
-        catch (Exception e)
-        {
-            return;
+                int targetX = currentPos.X + targetDeltaX;
+                int targetY = currentPos.Y + targetDeltaY;
+
+                int currentX = currentPos.X;
+                int currentY = currentPos.Y;
+
+                while (currentX != targetX || currentY != targetY)
+                {
+                    if (currentX < targetX) currentX++;
+                    else if (currentX > targetX) currentX--;
+
+                    if (currentY < targetY) currentY++;
+                    else if (currentY > targetY) currentY--;
+
+                    this.Position = new PixelPoint(currentX, currentY);
+                
+                    await Task.Delay(20); 
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Hata oluştu: {e.Message}");
+                break;
+            }
         }
     }
 
@@ -119,7 +130,7 @@ public partial class MainWindow : Window
 
     private void OpenChat_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (Environment.GetEnvironmentVariable("GeminiApiKey") is null) return;
+        //if (Environment.GetEnvironmentVariable("GeminiApiKey") is null) return;
 
         Dispatcher.UIThread.Post(() =>
         {
