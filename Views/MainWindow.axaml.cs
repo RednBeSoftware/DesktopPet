@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using DesktopPet.Classes;
 
@@ -13,7 +14,7 @@ public partial class MainWindow : Window
 {
     private readonly Pet _stickman = new Pet { Name = "Stickman" };
     private ChatWindow? _chatWindow;
-
+    private readonly Random _random = new Random();
     public MainWindow()
     {
         InitializeComponent();
@@ -56,9 +57,7 @@ public partial class MainWindow : Window
 
         this.Position = new PixelPoint(newX, newY);
     }
-
-    private readonly Random _random = new Random(); // Döngü dışında tanımlandı
-
+    
     private async Task MoveRandom()
     {
         while (true)
@@ -94,7 +93,7 @@ public partial class MainWindow : Window
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Hata oluştu: {e.Message}");
+                Console.WriteLine($"Error: {e.Message}");
                 break;
             }
         }
@@ -170,5 +169,11 @@ public partial class MainWindow : Window
     private void CloseApp_OnClick(object? sender, RoutedEventArgs e)
     {
         Close();
+    }
+
+    private void StopWave_OnClick(object? sender, RoutedEventArgs e)
+    {
+        _stickman.Animations["StickmanWave"].Timer.Stop();
+        _stickman.Image.Source = new Bitmap($"/Assets/Stickman/StickmanDefault.png");
     }
 }
