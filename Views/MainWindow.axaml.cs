@@ -1,10 +1,12 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Threading;
 using DesktopPet.Classes;
 
@@ -15,6 +17,9 @@ public partial class MainWindow : Window
     private readonly Pet _stickman = new Pet { Name = "Stickman" };
     private ChatWindow? _chatWindow;
     private readonly Random _random = new Random();
+    private CancellationTokenSource _moveRandomCancellationTokenSource = new CancellationTokenSource();
+    private Task? _moveRandomTask;
+    
     public MainWindow()
     {
         InitializeComponent();
@@ -22,7 +27,7 @@ public partial class MainWindow : Window
         _stickman.CreateAnimation("StickmanWave", 1, 3, "png");
         PlayAnimationPingPong("StickmanWave", _stickman);
 
-        MoveRandom();
+        _moveRandomTask = MoveRandom(_moveRandomCancellationTokenSource);
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
@@ -58,14 +63,14 @@ public partial class MainWindow : Window
         this.Position = new PixelPoint(newX, newY);
     }
     
-    private async Task MoveRandom()
+    private async Task MoveRandom(CancellationTokenSource cancellationTokenSource)
     {
         while (true)
         {
             try
             {
                 double waitTime = _random.NextDouble() * (5.0 - 1.0) + 1.0;
-                await Task.Delay(TimeSpan.FromSeconds(waitTime));
+                await Task.Delay(TimeSpan.FromSeconds(waitTime), cancellationTokenSource.Token);
 
                 var currentPos = this.Position;
             
@@ -88,7 +93,7 @@ public partial class MainWindow : Window
 
                     this.Position = new PixelPoint(currentX, currentY);
                 
-                    await Task.Delay(20); 
+                    await Task.Delay(20, cancellationTokenSource.Token); 
                 }
             }
             catch (Exception e)
@@ -171,9 +176,31 @@ public partial class MainWindow : Window
         Close();
     }
 
-    private void StopWave_OnClick(object? sender, RoutedEventArgs e)
+    private void StopAnimation_OnClick(object? sender, RoutedEventArgs e)
     {
-        _stickman.Animations["StickmanWave"].Timer.Stop();
-        _stickman.Image.Source = new Bitmap($"/Assets/Stickman/StickmanDefault.png");
+        try
+        {
+            _stickman.Animations["StickmanWave"].Timer.Stop();
+            _stickman.Image.Source = new Bitmap(AssetLoader.Open(new Uri
+                ("avares:://DesktopPet/Assets/Stickman/StickmanDefault.png")));
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine($"Error: {exception}");
+        }
+    }
+
+    private void StopMove_OnClick(object? sender, RoutedEventArgs e)
+    {
+        _moveRandomCancellationTokenSource.Cancel();
+    }
+
+    private void MoveRandom_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (_moveRandomCancellationTokenSource.IsCancellationRequested)
+        {
+            _moveRandomCancellationTokenSource = new CancellationTokenSource();
+        }
+        _moveRandomTask = MoveRandom(_moveRandomCancellationTokenSource);
     }
 }

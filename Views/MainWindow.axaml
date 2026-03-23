@@ -28,9 +28,12 @@
             IsHitTestVisible="True">
             <Image.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Open Chat" Name="OpenChat" Click="OpenChat_OnClick"/>
-                    <MenuItem Header="Stop Wave" Name="StopWave" Click="StopWave_OnClick"/>
-                    <MenuItem Header="Close App" Name="CloseApp" Click="CloseApp_OnClick"/>
+                    <MenuItem Header="Open Chat" Name="OpenChatMenuItem" Click="OpenChat_OnClick"/>
+                    
+                    <MenuItem Header="Move Random" Name="MoveRandomMenuItem" Click="MoveRandom_OnClick"/>
+                    <MenuItem Header="Stop Move" Name="StopMoveMenuItem" Click="StopMove_OnClick"/>
+                    <MenuItem Header="Stop Animation" Name="StopAnimationMenuItem" Click="StopAnimation_OnClick"/>
+                    <MenuItem Header="Close App" Name="CloseAppMenuItem" Click="CloseApp_OnClick"/>
                 </ContextMenu>
             </Image.ContextMenu>
         </Image>
