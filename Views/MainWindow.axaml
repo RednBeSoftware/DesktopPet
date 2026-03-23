@@ -17,23 +17,27 @@
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
 
     <Panel Background="{x:Null}">
         <Image Name="ImageStickman"
-            Source="/Assets/Stickman/StickmanDefault.png"
-            Height="350"
-            Width="350"
-            IsHitTestVisible="True">
+               Source="/Assets/Stickman/StickmanDefault.png"
+               Height="350"
+               Width="350"
+               IsHitTestVisible="True">
             <Image.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Open Chat" Name="OpenChatMenuItem" Click="OpenChat_OnClick"/>
-                    
-                    <MenuItem Header="Move Random" Name="MoveRandomMenuItem" Click="MoveRandom_OnClick"/>
-                    <MenuItem Header="Stop Move" Name="StopMoveMenuItem" Click="StopMove_OnClick"/>
-                    <MenuItem Header="Stop Animation" Name="StopAnimationMenuItem" Click="StopAnimation_OnClick"/>
-                    <MenuItem Header="Close App" Name="CloseAppMenuItem" Click="CloseApp_OnClick"/>
+                    <MenuItem Header="Open Chat" Name="OpenChatMenuItem" Click="OpenChat_OnClick" />
+                    <MenuItem Header="Move">
+                        <MenuItem Header="Move Random" Name="MoveRandomMenuItem" Click="MoveRandom_OnClick" />
+                        <MenuItem Header="Stop Move" Name="StopMoveMenuItem" Click="StopMove_OnClick" />
+                    </MenuItem>
+                    <MenuItem Header="Animation">
+                        <MenuItem Header="Start Wave" Name="StartWaveMenuItem" Click="StartWaveMenuItem_OnClick"/>
+                        <MenuItem Header="Stop Animation" Name="StopAnimationMenuItem" Click="StopAnimation_OnClick" />
+                    </MenuItem>
+                    <MenuItem Header="Close App" Name="CloseAppMenuItem" Click="CloseApp_OnClick" />
                 </ContextMenu>
             </Image.ContextMenu>
         </Image>

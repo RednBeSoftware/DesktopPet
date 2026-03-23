@@ -19,7 +19,7 @@ public partial class MainWindow : Window
     private readonly Random _random = new Random();
     private CancellationTokenSource _moveRandomCancellationTokenSource = new CancellationTokenSource();
     private Task? _moveRandomTask;
-    
+
     public MainWindow()
     {
         InitializeComponent();
@@ -62,7 +62,7 @@ public partial class MainWindow : Window
 
         this.Position = new PixelPoint(newX, newY);
     }
-    
+
     private async Task MoveRandom(CancellationTokenSource cancellationTokenSource)
     {
         while (true)
@@ -73,7 +73,7 @@ public partial class MainWindow : Window
                 await Task.Delay(TimeSpan.FromSeconds(waitTime), cancellationTokenSource.Token);
 
                 var currentPos = this.Position;
-            
+
                 int targetDeltaX = _random.Next(-250, 251);
                 int targetDeltaY = _random.Next(-250, 251);
 
@@ -92,13 +92,15 @@ public partial class MainWindow : Window
                     else if (currentY > targetY) currentY--;
 
                     this.Position = new PixelPoint(currentX, currentY);
-                
-                    await Task.Delay(20, cancellationTokenSource.Token); 
+
+                    await Task.Delay(20, cancellationTokenSource.Token);
                 }
             }
             catch (Exception e)
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine($"Error: {e.Message}");
+                Console.ResetColor();
                 break;
             }
         }
@@ -182,11 +184,13 @@ public partial class MainWindow : Window
         {
             _stickman.Animations["StickmanWave"].Timer.Stop();
             _stickman.Image.Source = new Bitmap(AssetLoader.Open(new Uri
-                ("avares:://DesktopPet/Assets/Stickman/StickmanDefault.png")));
+                ("avares:///DesktopPet/Assets/Stickman/StickmanDefault.png", UriKind.RelativeOrAbsolute)));
         }
         catch (Exception exception)
         {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine($"Error: {exception}");
+            Console.ResetColor();
         }
     }
 
@@ -201,6 +205,13 @@ public partial class MainWindow : Window
         {
             _moveRandomCancellationTokenSource = new CancellationTokenSource();
         }
+
         _moveRandomTask = MoveRandom(_moveRandomCancellationTokenSource);
+    }
+
+    private void StartWaveMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (_stickman.Animations["StickmanWave"].IsPlaying) return;
+        PlayAnimationPingPong("StickmanWave", _stickman);
     }
 }
