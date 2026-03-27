@@ -116,6 +116,8 @@ public partial class MainWindow : Window
         int direction = 1;
         int lastFrameIndex = animation.Frames.Count - 1;
 
+        // Clear any existing event handlers to prevent accumulation
+        animation.Timer.Tick -= null;
         animation.Timer.Tick += (sender, e) =>
         {
             if (animation.Frames.Count == 0) return;
@@ -180,11 +182,13 @@ public partial class MainWindow : Window
 
     private void StopAnimation_OnClick(object? sender, RoutedEventArgs e)
     {
+        var stickmansAnimation = _stickman.Animations["StickmanWave"];
         try
         {
-            _stickman.Animations["StickmanWave"].Timer.Stop();
+            stickmansAnimation.Timer.Stop();
+            stickmansAnimation.IsPlaying = false;
             _stickman.Image.Source = new Bitmap(AssetLoader.Open(new Uri
-                ("avares:///DesktopPet/Assets/Stickman/StickmanDefault.png", UriKind.RelativeOrAbsolute)));
+                ("avares://DesktopPet/Assets/Stickman/StickmanDefault.png", UriKind.RelativeOrAbsolute)));
         }
         catch (Exception exception)
         {
