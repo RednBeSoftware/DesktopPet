@@ -21,8 +21,7 @@ public partial class MainWindow : Window
     private Task? _moveRandomTask;
     private int _screenWidth = 0;
     private int _screenHeight = 0;
-    private TextBlock? _positionTextBlock;
-
+    private bool _isDraging = false;
     public MainWindow()
     {
         InitializeComponent();
@@ -79,8 +78,20 @@ public partial class MainWindow : Window
         {
             newX -= step;
         }
-
+        
+        if (e.Key == Key.LeftAlt || e.Key == Key.RightAlt)
+        {
+            _isDraging = true;
+        }
         this.Position = new PixelPoint(newX, newY);
+    }
+
+    protected override void OnKeyUp(KeyEventArgs e)
+    {
+        if (e.Key == Key.LeftAlt || e.Key == Key.RightAlt)
+        {
+            _isDraging = false;
+        }
     }
 
     private async Task MoveRandom(CancellationTokenSource cancellationTokenSource)
