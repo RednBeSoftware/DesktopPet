@@ -21,11 +21,13 @@ public partial class MainWindow : Window
     private Task? _moveRandomTask;
     private int _screenWidth = 0;
     private int _screenHeight = 0;
+    private TextBlock? _positionTextBlock;
 
     public MainWindow()
     {
         InitializeComponent();
 
+        _positionTextBlock = this.FindControl<TextBlock>("PositionTextBlock");
         Opened += (_, _) => UpdateScreenSize();
 
         _stickman.Image = ImageStickman;
@@ -46,6 +48,30 @@ public partial class MainWindow : Window
         PlayAnimationPingPong("StickmanWave", _stickman);
 
         _moveRandomTask = MoveRandom(_moveRandomCancellationTokenSource);
+
+        //ForTest
+        ControlePositon();
+    }
+
+
+    //ForTest
+    private void ControlePositon()
+    {
+        DispatcherTimer timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(0.2) };
+
+        var currentPosition = this.Position;
+        int x = currentPosition.X;
+        int y = currentPosition.Y;
+
+        timer.Tick += (sender, e) =>
+        {
+            currentPosition = this.Position;
+            x = currentPosition.X;
+            y = currentPosition.Y;
+
+            _positionTextBlock.Text = $"({x}, {y})";
+        };
+        timer.Start();
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
@@ -257,11 +283,5 @@ public partial class MainWindow : Window
     {
         if (_stickman.Animations["StickmanWave"].IsPlaying) return;
         PlayAnimationPingPong("StickmanWave", _stickman);
-    }
-
-    private void TestMenuItem_OnClick(object? sender, RoutedEventArgs e)
-    {
-        UpdateScreenSize();
-        Console.WriteLine($"Screen Size: {_screenWidth}x{_screenHeight}");
     }
 }
