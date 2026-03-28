@@ -48,30 +48,6 @@ public partial class MainWindow : Window
         PlayAnimationPingPong("StickmanWave", _stickman);
 
         _moveRandomTask = MoveRandom(_moveRandomCancellationTokenSource);
-
-        //ForTest
-        ControlePositon();
-    }
-
-
-    //ForTest
-    private void ControlePositon()
-    {
-        DispatcherTimer timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(0.2) };
-
-        var currentPosition = this.Position;
-        int x = currentPosition.X;
-        int y = currentPosition.Y;
-
-        timer.Tick += (sender, e) =>
-        {
-            currentPosition = this.Position;
-            x = currentPosition.X;
-            y = currentPosition.Y;
-
-            _positionTextBlock.Text = $"({x}, {y})";
-        };
-        timer.Start();
     }
 
     protected override void OnKeyDown(KeyEventArgs e)

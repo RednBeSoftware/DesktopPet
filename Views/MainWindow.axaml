@@ -21,7 +21,6 @@
     </Design.DataContext>
 
     <Panel Background="{x:Null}">
-        <TextBlock Text=" " x:Name="PositionTextBlock" Foreground="White" Background="DarkGray" TextWrapping="Wrap"/>
         <Image Name="ImageStickman"
                Source="/Assets/Stickman/StickmanDefault.png"
                Height="350"
