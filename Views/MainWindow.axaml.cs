@@ -19,10 +19,15 @@ public partial class MainWindow : Window
     private readonly Random _random = new Random();
     private CancellationTokenSource _moveRandomCancellationTokenSource = new CancellationTokenSource();
     private Task? _moveRandomTask;
+    private int _screenWidth = 0;
+    private int _screenHeight = 0;
 
     public MainWindow()
     {
         InitializeComponent();
+
+        Opened += (_, _) => UpdateScreenSize();
+
         _stickman.Image = ImageStickman;
         _stickman.CreateAnimation("StickmanWave", 1, 3, "png");
         PlayAnimationPingPong("StickmanWave", _stickman);
@@ -213,9 +218,37 @@ public partial class MainWindow : Window
         _moveRandomTask = MoveRandom(_moveRandomCancellationTokenSource);
     }
 
+    private void UpdateScreenSize()
+    {
+        var screen = this.Screens.Primary;
+        if (screen != null && screen.Bounds.Width > 0 && screen.Bounds.Height > 0)
+        {
+            _screenWidth = screen.Bounds.Width;
+            _screenHeight = screen.Bounds.Height;
+            return;
+        }
+
+        if (Screens.All.Count > 0)
+        {
+            var firstScreen = Screens.All[0];
+            _screenWidth = firstScreen.Bounds.Width;
+            _screenHeight = firstScreen.Bounds.Height;
+            return;
+        }
+
+        _screenWidth = (int)Bounds.Width;
+        _screenHeight = (int)Bounds.Height;
+    }
+
     private void StartWaveMenuItem_OnClick(object? sender, RoutedEventArgs e)
     {
         if (_stickman.Animations["StickmanWave"].IsPlaying) return;
         PlayAnimationPingPong("StickmanWave", _stickman);
+    }
+
+    private void TestMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        UpdateScreenSize();
+        Console.WriteLine($"Screen Size: {_screenWidth}x{_screenHeight}");
     }
 }
