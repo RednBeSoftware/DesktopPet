@@ -78,6 +78,11 @@ public partial class MainWindow : Window
         {
             newX -= step;
         }
+
+        if (e.Key == Key.LeftAlt || e.Key == Key.RightAlt)
+        {
+            _isDraging = true;
+        }
         
         this.Position = new PixelPoint(newX, newY);
     }
