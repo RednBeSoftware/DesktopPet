@@ -29,7 +29,20 @@ public partial class MainWindow : Window
         Opened += (_, _) => UpdateScreenSize();
 
         _stickman.Image = ImageStickman;
-        _stickman.CreateAnimation("StickmanWave", 1, 3, "png");
+        try
+        {
+            _stickman.CreateAnimation("StickmanWave", 1, 3, "png");
+            _stickman.CreateAnimation("StickmanWalkLeft", 1, 4, "png");
+            _stickman.CreateAnimation("StickmanWalkRight", 1, 4, "png");
+            _stickman.CreateAnimation("StickmanTurnRight", 1, 4, "png");
+            _stickman.CreateAnimation("StickmanTurnLeft", 1, 4, "png");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        
+
         PlayAnimationPingPong("StickmanWave", _stickman);
 
         _moveRandomTask = MoveRandom(_moveRandomCancellationTokenSource);
