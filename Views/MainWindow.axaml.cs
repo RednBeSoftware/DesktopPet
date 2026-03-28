@@ -22,11 +22,11 @@ public partial class MainWindow : Window
     private int _screenWidth = 0;
     private int _screenHeight = 0;
     private bool _isDraging = false;
+    
     public MainWindow()
     {
         InitializeComponent();
 
-        _positionTextBlock = this.FindControl<TextBlock>("PositionTextBlock");
         Opened += (_, _) => UpdateScreenSize();
 
         _stickman.Image = ImageStickman;
@@ -79,10 +79,6 @@ public partial class MainWindow : Window
             newX -= step;
         }
         
-        if (e.Key == Key.LeftAlt || e.Key == Key.RightAlt)
-        {
-            _isDraging = true;
-        }
         this.Position = new PixelPoint(newX, newY);
     }
 
@@ -92,6 +88,20 @@ public partial class MainWindow : Window
         {
             _isDraging = false;
         }
+    }
+
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        if (_isDraging)
+        {
+            var screenPos = e.GetPosition(null);
+            this.Position = new PixelPoint((int)screenPos.X, (int)screenPos.Y);
+        }
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        _isDraging = false;
     }
 
     private async Task MoveRandom(CancellationTokenSource cancellationTokenSource)
